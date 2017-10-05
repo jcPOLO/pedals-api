@@ -1,51 +1,79 @@
-class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy]
+module Api
+  module V1
+    class ProjectsController < ApplicationController
+      before_action :set_project, only: [:show, :update, :destroy]
 
-  # GET /projects
-  def index
-    @projects = Project.all
+      # GET /projects
+      def index
+        projects = Project.all
+        @projects = projects.where(inventory: false)
+        @inventory = projects.where(inventory: true)
 
-    render json: @projects
-  end
+        render json: @projects
+      end
 
-  # GET /projects/1
-  def show
-    render json: @project
-  end
+      # GET /projects/1
+      def show
+        render json: @project
+      end
 
-  # POST /projects
-  def create
-    @project = Project.new(project_params)
+      # POST /projects
+      def create
+        @project = Project.new(project_params)
 
-    if @project.save
-      render json: @project, status: :created, location: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
+        if @project.save
+          render json: @project, status: :created, location: @project
+        else
+          render json: @project.errors, status: :unprocessable_entity
+        end
+      end
+
+      # PATCH/PUT /projects/1
+      def update
+        if @project.update(project_params)
+          render json: @project, status: :ok
+        else
+          render json: @project.errors, status: :unprocessable_entity
+        end
+      end
+
+      # DELETE /projects/1
+      def destroy
+        if @project.destroy
+          head :no_content, status: :ok
+        else
+          render json: @project.errors, status: :unprocessable_entry
+      end
+
+      def inventory
+        @inventory = Project.find_by(inventory: true)
+        render json: @inventory
+      end
+      
+      private
+        # Use callbacks to share common setup or constraints between actions.
+        def set_project
+          # @project = Project.find(params[:id])
+           @project = Project.includes(
+          :components, :componentsprojects).find(params[:id]
+          )
+        end
+
+        # Only allow a trusted parameter "white list" through.
+        # def project_params
+        #   params.require(:project).permit(:name, :inventory)
+        # end
+
+        def project_params
+          params.require(:project).permit(
+            :name, componentsprojects_attributes: [
+              :id, :quantity, :_destroy, component_attributes: [
+                :id, :value, :component_type_id,
+                :model, :legs, :log, :rev, :_destroy
+              ]
+            ]
+          )
+        end
     end
   end
-
-  # PATCH/PUT /projects/1
-  def update
-    if @project.update(project_params)
-      render json: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /projects/1
-  def destroy
-    @project.destroy
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def project_params
-      params.require(:project).permit(:name, :inventory)
-    end
 end

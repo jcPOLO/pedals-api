@@ -5,6 +5,7 @@ class CreateComponents < ActiveRecord::Migration[5.1]
       t.integer :legs
       t.integer :log
       t.integer :rev
+      t.string  :model
 
       t.timestamps
     end
