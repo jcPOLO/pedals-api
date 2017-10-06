@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20171005183431) do
   create_table "components_projects", id: false, force: :cascade do |t|
     t.bigint "component_id", null: false
     t.bigint "project_id", null: false
-    t.integer "quantity", null: false
+    t.integer "amount", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["component_id", "project_id"], name: "index_components_projects_on_component_id_and_project_id"

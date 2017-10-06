@@ -58,6 +58,13 @@ module Api
         # @project = Project.includes({ components: :componentsprojects }).find(params[:id])
       end
 
+      def set_components
+        @components = @project.components
+      end
+
+      def set_component_amount
+        @component_amount = @components.
+
       # Only allow a trusted parameter "white list" through.
       # def project_params
       #   params.require(:project).permit(:name, :inventory)
@@ -65,8 +72,8 @@ module Api
 
       def project_params
         params.require(:project).permit(
-          :name, componentsprojects_attributes: [
-            :id, :quantity, :_destroy, component_attributes: [
+          :name, components_projects_attributes: [
+            :id, :amount, :_destroy, component_attributes: [
               :id, :value, :component_type_id,
               :model, :legs, :log, :rev, :_destroy
             ]

@@ -38,10 +38,10 @@ resistors_list = [
     [9,3900000]
 ]
 
-resistors_list.each do |quantity, value|
+resistors_list.each do |amount, value|
   Component.create!( component_type_id: 1, value: value )
   component_id = Component.last.id
-  ComponentsProject.create!( project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!( project_id: 1, amount: amount, component_id: component_id )
 end
 
 capacitors_list = [
@@ -68,10 +68,10 @@ capacitors_list = [
     [6,100000000]
 ]
 
-capacitors_list.each do |quantity, value|
+capacitors_list.each do |amount, value|
   Component.create!( component_type_id: 2, value: value )
   component_id = Component.last.id
-  ComponentsProject.create!(project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 ics_list = [
@@ -84,10 +84,10 @@ ics_list = [
     [1,16,"74ls83"]
 ]
 
-ics_list.each do |quantity, legs, value|
+ics_list.each do |amount, legs, value|
   Component.create!( component_type_id: 3, legs: legs, model: value )
   component_id = Component.last.id
-  ComponentsProject.create!(project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 transistors_list = [
@@ -108,10 +108,10 @@ transistors_list = [
     [2,"bc107c"]
 ]
 
-transistors_list.each do |quantity, value|
+transistors_list.each do |amount, value|
   Component.create!( component_type_id: 4, model: value )
   component_id = Component.last.id
-  ComponentsProject.create!(project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 potentiometers_list = [
@@ -121,10 +121,10 @@ potentiometers_list = [
     [1,10,true,false]
 ]
 
-potentiometers_list.each do |quantity, value, log, rev|
+potentiometers_list.each do |amount, value, log, rev|
   Component.create!( component_type_id: 6, value: value, log: log, rev: rev )
   component_id = Component.last.id
-  ComponentsProject.create!(project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 swdcjacks_list = [
@@ -138,10 +138,10 @@ swdcjacks_list = [
     [10,2,"bueno"]
 ]
 
-swdcjacks_list.each do |id, quantity, model|
+swdcjacks_list.each do |id, amount, model|
   Component.create!( component_type_id: id, model: model )
   component_id = Component.last.id
-  ComponentsProject.create!(project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 sockets_list = [
@@ -152,14 +152,30 @@ sockets_list = [
     [1,4, "lineal"]
 ]
 
-sockets_list.each do |quantity, legs, model|
+sockets_list.each do |amount, legs, model|
   Component.create!( component_type_id: 9, legs: legs, model: model )
   component_id = Component.last.id
-  ComponentsProject.create!(project_id: 1, quantity: quantity, component_id: component_id )
+  ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 
-# Project.create(id: 2, name: "MXR Micro Amp")
+# ----------------------- Create MXR Micro Amp Project ---------------------
+
+Project.create!(id: 2, name: "MXR Micro Amp")
+
+mamp_list = [
+  [41, 1],
+  [21, 1],
+  [26, 1],
+  [17, 2],
+  [39, 1],
+  [53, 1]
+]
+
+mamp_list.each do |id, amount|
+  ComponentsProject.create!(project_id: 2, amount: amount, component_id: id )
+end
+
 # 1Resistor22000000Edit
 # 1Resistor10000000Edit
 # 1Resistor1000Edit
