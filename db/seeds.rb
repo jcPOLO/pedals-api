@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Project.create(id: 1, name: "Inventory")
+Project.create(id: 1, name: "Inventory", inventory: true)
 
 component_types_list = ["Resistor", "Capacitor", "IC", "Transistor", "Diode", "Potentiometer", "Jack", "Switch", "Socket", "Connector"]
 

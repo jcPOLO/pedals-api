@@ -7,9 +7,15 @@ module Api
       def index
         projects = Project.all
         @projects = projects.where(inventory: false)
-        @inventory = projects.where(inventory: true)
 
         render json: @projects
+      end
+
+      # GET /inventory
+      def inventory
+        @inventory = Project.find_by(inventory: true).components
+
+        render json: @inventory
       end
 
       # GET /projects/1
@@ -44,11 +50,6 @@ module Api
         else
           render json: @project.errors, status: :unprocessable_entry
         end
-      end
-
-      def inventory
-        @inventory = Project.find_by(inventory: true)
-        render json: @inventory
       end
       
       private
