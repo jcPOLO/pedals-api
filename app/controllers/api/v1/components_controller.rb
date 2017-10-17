@@ -4,14 +4,14 @@ module Api
       before_action :set_project
       before_action :set_component, only: [:show, :edit, :new, :update, :destroy]
       before_action :set_components, only: [:show, :index]
-      before_action :set_component_amount, only: [:show, :index]
+      # before_action :set_amount, only: [:show]
 
-      # GET projects/1/components
+      # GET /projects/:project_id/components
       def index
-        render json: @components
+        json_response(@components)
       end
 
-      # GET projects/1/components/1
+      # GET /projects/:project_id/components/:id
       def show
         @components.each do |c|
           if c.id == @component.id
@@ -21,7 +21,7 @@ module Api
         render json: @component.errors, status: :unprocessable_entity
       end
 
-      # POST /components
+      # POST /project/:project_id/components
       # def create
       #   @component = Component.new(component_params)
 
@@ -32,7 +32,7 @@ module Api
       #   end
       # end
 
-      # PATCH/PUT /components/1
+      # PATCH/PUT /project/:project_id/components/:id
       def update
         if @component.update(component_params)
           render json: @component, status: :ok
@@ -41,7 +41,7 @@ module Api
         end
       end
 
-      # DELETE /components/1
+      # DELETE /project/:project_id/components/:id
       def destroy
         if @component.destroy
           head :no_content, status: :ok
@@ -49,16 +49,6 @@ module Api
           render json: @component.errors, status: :unprocessable_entry
         end
       end
-
-      # def new
-      #   @component.assignments.find_by(project_id: @project)
-      # end
-
-      # def edit
-      #   @assignment = @component.assignments.find_by(
-      #     project_id: @project
-      #     )
-      # end
 
       private
         # Use callbacks to share common setup or constraints between actions.
@@ -69,30 +59,18 @@ module Api
         @project = Project.find(params[:project_id])
       end
 
-      def set_component
-        # @component = @project.components.find(params[:id])
-        @component = Component.find(params[:id])
-      end
-
       def set_components
         @components = @project.components
       end
 
-      def set_component_type
-        @component_type = Component.find(params[:component_type_id])
+      def set_component
+        @component = @project.components.find(params[:id])
       end
 
-      def set_component_amount
-        @component_amount = ComponentsProject.find_by(
-                              project_id:   @project.id, 
-                              component_id: @component.id
-                            ).amount
+      def set_amount
+        @component.amount << @project.components_projects.find_by(component_id: @component.id)
       end
 
-        # Only allow a trusted parameter "white list" through.
-        # def component_params
-        #   params.require(:component).permit(:value, :legs, :log, :rev)
-        # end
       def component_params
         params.require(:component).permit(
           :value, :component_type_id, :model, :legs, :log, :rev,

@@ -9,9 +9,9 @@ Project.create(id: 1, name: "Inventory", inventory: true)
 
 component_types_list = ["Resistor", "Capacitor", "IC", "Transistor", "Diode", "Potentiometer", "Jack", "Switch", "Socket", "Connector"]
 
-component_types_list.each do |name|
-  ComponentType.create( name: name )
-end
+# component_types_list.each do |name|
+#   ComponentType.create( name: name )
+# end
 
 resistors_list = [
     [30,10],

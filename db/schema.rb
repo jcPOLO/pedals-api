@@ -10,16 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171005183431) do
+ActiveRecord::Schema.define(version: 20171005092320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "component_types", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "components", force: :cascade do |t|
     t.integer "value"
@@ -27,10 +21,9 @@ ActiveRecord::Schema.define(version: 20171005183431) do
     t.boolean "log"
     t.boolean "rev"
     t.string "model"
+    t.integer "component_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "component_type_id"
-    t.index ["component_type_id"], name: "index_components_on_component_type_id"
   end
 
   create_table "components_projects", id: false, force: :cascade do |t|
@@ -50,5 +43,4 @@ ActiveRecord::Schema.define(version: 20171005183431) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "components", "component_types"
 end

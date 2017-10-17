@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Projects API', type: :request do
+  before do
+    Project.destroy_all
+    Component.destroy_all
+    ComponentsProject.destroy_all
+  end
+
   let!(:projects) { create_list(:project, 10) }
   let(:project_id) { projects.first.id }
 
@@ -9,6 +15,7 @@ RSpec.describe 'Projects API', type: :request do
 
     it 'returns projects' do
       expect(json).not_to be_empty
+      expect(json.size).to eq(10)
     end
 
     it 'returns status code 200' do

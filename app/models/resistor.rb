@@ -1,0 +1,2 @@
+class Resistor < Component
+end

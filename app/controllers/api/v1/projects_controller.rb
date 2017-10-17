@@ -13,14 +13,18 @@ module Api
 
       # GET /inventory
       def inventory
-        @inventory = Project.find_by(inventory: true).components
+        project_inventory = Project.find_by(inventory: true)
+        components_amount = ComponentsProject.where(project_id: project_inventory.id)
+
+        @inventory = project_inventory.components
 
         json_response @inventory
       end
 
       # GET /projects/:id
       def show
-        json_response({ project: @project, components: @project.components })
+        #json_response({ project: @project, components: @project.components })
+        json_response(@project)
       end
 
       # POST /projects
@@ -55,16 +59,13 @@ module Api
       private
         # Use callbacks to share common setup or constraints between actions.
       def set_project
-        @project = Project.find(params[:id])
-        # @project = Project.includes({ components: :componentsprojects }).find(params[:id])
+        #@project = Project.find(params[:id])
+        @project = Project.includes(:components, :components_projects).find(params[:id])
       end
 
       def set_components
         @components = @project.components
       end
-
-      def set_component_amount
-        @component_amount = @components.
 
       # Only allow a trusted parameter "white list" through.
       # def project_params
@@ -72,7 +73,7 @@ module Api
       # end
 
       def project_params
-        params.require(:project).permit(
+        params.permit(
           :name, components_projects_attributes: [
             :id, :amount, :_destroy, component_attributes: [
               :id, :value, :component_type_id,
