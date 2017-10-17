@@ -8,38 +8,38 @@ module Api
         projects = Project.all
         @projects = projects.where(inventory: false)
 
-        render json: @projects
+        json_response(@projects)
       end
 
       # GET /inventory
       def inventory
         @inventory = Project.find_by(inventory: true).components
 
-        render json: @inventory
+        json_response @inventory
       end
 
-      # GET /projects/1
+      # GET /projects/:id
       def show
-        render json: { project: @project, components: @project.components }, status: :ok
+        json_response({ project: @project, components: @project.components })
       end
 
       # POST /projects
       def create
-        @project = Project.new(project_params)
-
-        if @project.save
-          render json: @project, status: :created, location: @project
-        else
-          render json: @project.errors, status: :unprocessable_entity
-        end
+        @project = Project.create!(project_params)
+        json_response(@project, :created)
+        # if @project.save
+        #   render json: @project, status: :created, location: @project
+        # else
+        #   json_response(@project.errors, :unprocessable_entity)
+        # end
       end
 
       # PATCH/PUT /projects/1
       def update
         if @project.update(project_params)
-          render json: @project, status: :ok
+          json_response @project
         else
-          render json: @project.errors, status: :unprocessable_entity
+          json_response(@project.errors, :unprocessable_entity)
         end
       end
 
@@ -48,7 +48,7 @@ module Api
         if @project.destroy
           head :no_content, status: :ok
         else
-          render json: @project.errors, status: :unprocessable_entry
+          json_response(@project.errors, :unprocessable_entry)
         end
       end
       
