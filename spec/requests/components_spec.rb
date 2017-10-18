@@ -87,7 +87,7 @@ RSpec.describe 'Components API' do
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match(/Validation failed: component_type_id can't be blank/)
+        expect(response.body).to match(/component_type_id: can't be blank/)
       end
     end
   end
