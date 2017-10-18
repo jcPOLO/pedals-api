@@ -8,12 +8,12 @@ RSpec.describe 'Components API' do
   # end
 
   let!(:project)            { create(:project) }
-  let!(:components)         { build_list(:component, 20) }
-  let!(:components_project) { create_list(:components_project, 20, project_id: project.id ) }
+  #let!(:components)         { create_list(:component ,3) }
+  let!(:components_project) { create_list(:components_project, 20, project_id: project.id) }
 
 
   let(:project_id)          { project.id }
-  let(:id)                  { components.first.id }
+  let(:id)                  { project.components.first.id }
 
   describe 'GET /api/v1/projects/:project_id/components' do
     before { get "/api/v1/projects/#{project_id}/components" }
@@ -21,7 +21,6 @@ RSpec.describe 'Components API' do
     context 'when project exists' do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
-        expect(project_id).to eq(2)
       end
 
       it 'returns all project components' do
@@ -48,7 +47,6 @@ RSpec.describe 'Components API' do
     context 'when project component exists' do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
-        expect(id).to eq(1)
       end
 
       # it 'returns the component' do
