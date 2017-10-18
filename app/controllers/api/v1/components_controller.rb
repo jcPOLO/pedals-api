@@ -22,15 +22,14 @@ module Api
       end
 
       # POST /project/:project_id/components
-      # def create
-      #   @component = Component.new(component_params)
-
-      #   if @component.save
-      #     render json: @component, status: :created, location: @component
-      #   else
-      #     render json: @component.errors, status: :unprocessable_entity
-      #   end
-      # end
+      def create
+        @component = Component.new(component_params)
+        if @component.save
+          render json: @component, status: :created
+        else
+          render json: @component.errors, status: :unprocessable_entity
+        end
+      end
 
       # PATCH/PUT /project/:project_id/components/:id
       def update
@@ -72,7 +71,7 @@ module Api
       end
 
       def component_params
-        params.require(:component).permit(
+        params.permit(
           :value, :component_type_id, :model, :legs, :log, :rev,
             components_projects_attributes: [
               :id, :amount, :project_id,:component_id, :_destroy
