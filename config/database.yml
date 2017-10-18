@@ -30,6 +30,9 @@ development:
 test:
   <<: *default
   database: pedals-api_test
+  username: pedals-api
+  password: pedals-api
+  host: localhost
 
 production:
   <<: *default
