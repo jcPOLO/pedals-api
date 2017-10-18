@@ -1,7 +1,7 @@
 module Api
   module V1
     class ProjectsController < ApplicationController
-      before_action :set_project, only: [:show, :update, :destroy]
+      before_action :set_project, only: %i[show update destroy]
 
       # GET /projects
       def index
@@ -14,7 +14,9 @@ module Api
       # GET /inventory
       def inventory
         project_inventory = Project.find_by(inventory: true)
-        components_amount = ComponentsProject.where(project_id: project_inventory.id)
+        components_amount = ComponentsProject.where(
+          project_id: project_inventory.id
+        )
 
         @inventory = project_inventory.components
 
@@ -23,7 +25,7 @@ module Api
 
       # GET /projects/:id
       def show
-        #json_response({ project: @project, components: @project.components })
+        # json_response({ project: @project, components: @project.components })
         json_response(@project)
       end
 

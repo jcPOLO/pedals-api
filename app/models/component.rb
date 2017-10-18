@@ -1,8 +1,8 @@
 class Component < ApplicationRecord
-	has_many :components_projects
-	has_many :projects, :through => :components_projects
+  has_many :components_projects
+  has_many :projects, through: :components_projects
   validates_presence_of :component_type_id
-  # attr_accessor :amount
+  attr_accessor :amount
   # attr_reader :amount
 
   # def components_for_project(project_id)

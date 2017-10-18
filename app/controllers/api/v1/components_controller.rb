@@ -50,10 +50,10 @@ module Api
       end
 
       private
-        # Use callbacks to share common setup or constraints between actions.
-        # def set_component
-        #   @component = Component.find(params[:id])
-        # end
+      # Use callbacks to share common setup or constraints between actions.
+      # def set_component
+      #   @component = Component.find(params[:id])
+      # end
       def set_project
         @project = Project.find(params[:project_id])
       end
@@ -71,12 +71,7 @@ module Api
       end
 
       def component_params
-        params.permit(
-          :value, :component_type_id, :model, :legs, :log, :rev,
-            components_projects_attributes: [
-              :id, :amount, :project_id,:component_id, :_destroy
-            ]
-        )
+        params.permit(:value, :component_type_id, :model, :legs, :log, :rev)
       end
     end
   end
