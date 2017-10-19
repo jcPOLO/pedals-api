@@ -43,6 +43,8 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     arel (8.0.0)
     bcrypt (3.1.11)
     builder (3.2.3)
@@ -66,6 +68,8 @@ GEM
       activesupport (>= 4.2.0)
     hirb (0.7.3)
     i18n (0.8.6)
+    json-schema (2.8.0)
+      addressable (>= 2.4)
     jsonapi-renderer (0.1.3)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -86,6 +90,7 @@ GEM
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
     pg (0.21.0)
+    public_suffix (3.0.0)
     puma (3.10.0)
     rack (2.0.3)
     rack-test (0.7.0)
@@ -169,6 +174,7 @@ DEPENDENCIES
   factory_girl_rails (~> 4.0)
   faker
   hirb
+  json-schema
   listen (>= 3.0.5, < 3.2)
   pg
   puma (~> 3.7)

@@ -1,3 +1,4 @@
+
 require 'rails_helper'
 
 RSpec.describe 'Projects API', type: :request do
@@ -14,7 +15,7 @@ RSpec.describe 'Projects API', type: :request do
     before { get '/api/v1/projects' }
 
     it 'returns projects' do
-      expect(json).not_to be_empty
+      expect(json).not_to be_nil
       expect(json.size).to eq(10)
     end
 
@@ -28,8 +29,9 @@ RSpec.describe 'Projects API', type: :request do
 
     context 'when the record exists' do
       it 'returns the project' do
-        expect(json).not_to be_empty
+        expect(json).not_to be_nil
         expect(json['id']).to eq(project_id)
+        expect(response).to match_response_schema('project')
       end
 
       it 'returns status code 200' do

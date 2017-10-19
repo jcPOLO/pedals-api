@@ -57,11 +57,11 @@ module Api
           json_response(@project.errors, :unprocessable_entry)
         end
       end
-      
+
       private
-        # Use callbacks to share common setup or constraints between actions.
+
       def set_project
-        #@project = Project.find(params[:id])
+        # @project = Project.find(params[:id])
         @project = Project.includes(:components, :components_projects).find(params[:id])
       end
 
@@ -69,20 +69,8 @@ module Api
         @components = @project.components
       end
 
-      # Only allow a trusted parameter "white list" through.
-      # def project_params
-      #   params.require(:project).permit(:name, :inventory)
-      # end
-
       def project_params
-        params.permit(
-          :name, components_projects_attributes: [
-            :id, :amount, :_destroy, component_attributes: [
-              :id, :value, :component_type_id,
-              :model, :legs, :log, :rev, :_destroy
-            ]
-          ]
-        )
+        params.permit(:name)
       end
     end
   end

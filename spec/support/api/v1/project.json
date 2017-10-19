@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {[
+      "name",
+      "created_at",
+      "id",
+      "updated_at"
+      ],
+      "properties" : {
+        "name" : { "type" : "string" },
+        "created_at" : { "type" : "string", "format": "date-time" },
+        "first_name" : { "type" : "string" },
+        "id" : { "type" : "integer" },
+        "updated_at" : { "type" : "string", "format": "date-time" }
+      }
+    }
+  }
+}

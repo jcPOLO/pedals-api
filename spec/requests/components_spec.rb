@@ -1,16 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Components API' do
-  # before do
-  #   Project.destroy_all
-  #   Component.destroy_all
-  #   ComponentsProject.destroy_all
-  # end
 
   let!(:project)            { create(:project) }
-  #let!(:components)         { create_list(:component ,3) }
   let!(:components_project) { create_list(:components_project, 20, project_id: project.id) }
-
 
   let(:project_id)          { project.id }
   let(:id)                  { project.components.first.id }
@@ -25,6 +18,12 @@ RSpec.describe 'Components API' do
 
       it 'returns all project components' do
         expect(json.size).to eq(20)
+      end
+
+      it 'returns the component amount' do
+        20.times do |i|
+          expect(json[i]['amount']).to be_between(1, 100)
+        end
       end
     end
 
@@ -49,9 +48,14 @@ RSpec.describe 'Components API' do
         expect(response).to have_http_status(200)
       end
 
-      # it 'returns the component' do
-      #   expect(json['id']).to eq(id)
-      # end
+      it 'returns the component' do
+        expect(json['id']).to eq(id)
+        expect(response).to match_response_schema('component')
+      end
+
+      it 'returns the component amount' do
+        expect(json['amount']).to be_between(1, 100)
+      end
     end
 
     context 'when project component does not exists' do

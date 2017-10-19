@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Component",
+  "description": "A component for a project",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for a component",
+      "type": "integer"
+    },
+    "component_type_id": {
+      "description": "Identifier for a component type",
+      "type": "integer"
+    },
+    "value": {
+      "description": "Resistors or capacitors value",
+      "type": ["number", "null"]
+    },
+    "amount": {
+      "description": "Component quantity stored",
+      "type": "integer"
+    },
+    "log": {
+      "description": "True when pot is log",
+      "type": ["boolean", "null"]
+    },
+    "rev": {
+      "description": "True when pot is reverse",
+      "type": ["boolean", "null"]
+    },
+    "legs": {
+      "description": "Number of legs for IC or sockets",
+      "type": ["integer", "null"]
+    },
+    "model": {
+      "description": "IC or transistor model name. Switches, jacks, DPDTs..",
+      "type": ["string", "null"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "component_type_id",
+    "amount"
+  ]
+}

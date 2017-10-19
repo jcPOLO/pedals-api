@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      get 'inventory', to: 'projects#inventory'
+      get 'inventory', to: 'components#inventory'
       resources :projects do
         resources :components
       end

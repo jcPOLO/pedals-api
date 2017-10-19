@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Project",
+  "description": "A project pedal to build",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for a project",
+      "type": "integer"
+    },
+    "name": {
+      "description": "Name of the project",
+      "type": "string"
+    },
+    "inventory": {
+      "description": "True when it is not a project but an inventory",
+      "type": "boolean"
+    },
+    "created_at" : { "type" : "string", "format": "date-time" },
+    "updated_at" : { "type" : "string", "format": "date-time" }
+  },
+  "required": ["name"]
+}
