@@ -5,28 +5,14 @@ module Api
 
       # GET /projects
       def index
-        projects = Project.all
-        @projects = projects.where(inventory: false)
-
-        json_response(@projects)
-      end
-
-      # GET /inventory
-      def inventory
-        project_inventory = Project.find_by(inventory: true)
-        components_amount = ComponentsProject.where(
-          project_id: project_inventory.id
-        )
-
-        @inventory = project_inventory.components
-
-        json_response @inventory
+        @projects = Project.where(inventory: false)
+        render json: @projects
       end
 
       # GET /projects/:id
       def show
         # json_response({ project: @project, components: @project.components })
-        json_response(@project)
+        render json: @project
       end
 
       # POST /projects
@@ -61,12 +47,7 @@ module Api
       private
 
       def set_project
-        # @project = Project.find(params[:id])
-        @project = Project.includes(:components, :components_projects).find(params[:id])
-      end
-
-      def set_components
-        @components = @project.components
+        @project = Project.find(params[:id])
       end
 
       def project_params

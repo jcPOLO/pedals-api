@@ -4,7 +4,7 @@ module Api
       before_action :set_project,    except: :inventory
       before_action :set_inventory,  only: :inventory
       before_action :set_component,  only: %i[show update destroy]
-      before_action :set_components, only: %i[show index inventory]
+      before_action :set_components, only: %i[index inventory]
 
       # GET /inventory
       def inventory
@@ -45,7 +45,7 @@ module Api
         if @component.destroy
           head :no_content, status: :ok
         else
-          render json: @component.errors, status: :unprocessable_entry
+          render json: @component.errors, status: :unprocessable_entity
         end
       end
 
@@ -60,21 +60,15 @@ module Api
       end
 
       def set_component
-        component = @project.components.find(params[:id])
-        component_project = @project.amounts.find_by(component_id: component)
-        component.amount = component_project.amount
-        @component = component
+        @component = add_amount(@project.components.find(params[:id]))
       end
 
       def set_components
-        components = @project.components
-        a_components = []
-        components.each do |c|
-          component_project = @project.amounts.find_by(component_id: c.id)
-          c.amount = component_project.amount
-          a_components << c
-        end
-        @components = a_components
+        @components = add_amount(@project.components)
+      end
+
+      def add_amount(components)
+        @project.amounts(components)
       end
 
       def component_params

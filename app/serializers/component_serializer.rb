@@ -1,6 +1,7 @@
 class ComponentSerializer < ActiveModel::Serializer
   attributes :id,
              :type,
+             :component_type_id, # TODO, to be removed.
              :amount,
              :value,
              :log,

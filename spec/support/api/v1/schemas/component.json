@@ -12,6 +12,10 @@
       "description": "Identifier for a component type",
       "type": "integer"
     },
+    "type": {
+      "description": "Identifier for a component type",
+      "type": "string"
+    },
     "value": {
       "description": "Resistors or capacitors value",
       "type": ["number", "null"]
@@ -46,7 +50,7 @@
     }
   },
   "required": [
-    "component_type_id",
+    "type",
     "amount"
   ]
 }
