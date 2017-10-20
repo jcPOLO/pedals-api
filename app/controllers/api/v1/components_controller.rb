@@ -72,7 +72,7 @@ module Api
       end
 
       def component_params
-        params.permit(:value, :component_type_id, :model, :legs, :log, :rev)
+        params.permit(:value, :component_type, :model, :legs, :log, :rev)
       end
     end
   end

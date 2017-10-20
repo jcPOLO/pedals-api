@@ -3,5 +3,5 @@ class Component < ApplicationRecord
   has_many :projects, through: :components_projects
   attr_accessor :amount
   accepts_nested_attributes_for :components_projects
-  validates_presence_of :component_type_id
+  validates_presence_of :component_type
 end

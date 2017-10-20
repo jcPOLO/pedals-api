@@ -8,13 +8,9 @@
       "description": "The unique identifier for a component",
       "type": "integer"
     },
-    "component_type_id": {
+    "component_type": {
       "description": "Identifier for a component type",
       "type": "integer"
-    },
-    "type": {
-      "description": "Identifier for a component type",
-      "type": "string"
     },
     "value": {
       "description": "Resistors or capacitors value",
@@ -50,7 +46,7 @@
     }
   },
   "required": [
-    "type",
+    "component_type",
     "amount"
   ]
 }

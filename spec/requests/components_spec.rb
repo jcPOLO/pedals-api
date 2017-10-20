@@ -73,7 +73,7 @@ RSpec.describe 'Components API' do
 
   # Test suite for POST /projects/:project_id/components
   describe 'POST /api/v1/projects/:project_id/components' do
-    let(:valid_attributes) { { component_type_id: 1, value: 12345 } }
+    let(:valid_attributes) { { component_type: 1, value: 12345 } }
 
     context 'when request attributes are valid' do
       before { post "/api/v1/projects/#{project_id}/components", params: valid_attributes }
@@ -91,7 +91,7 @@ RSpec.describe 'Components API' do
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match("{\"component_type_id\":[\"can't be blank\"]}")
+        expect(response.body).to match("{\"component_type\":[\"can't be blank\"]}")
       end
     end
   end
