@@ -73,7 +73,7 @@ RSpec.describe 'Components API' do
 
   # Test suite for POST /projects/:project_id/components
   describe 'POST /api/v1/projects/:project_id/components' do
-    let(:valid_attributes) { { component_type: 1, value: 12345 } }
+    let(:valid_attributes) { { component_type: 'Capacitor', value: 123 } }
 
     context 'when request attributes are valid' do
       before { post "/api/v1/projects/#{project_id}/components", params: valid_attributes }

@@ -39,7 +39,7 @@ resistors_list = [
 ]
 
 resistors_list.each do |amount, value|
-  Component.create!(component_type: 1, value: value )
+  Component.create!(component_type: 0, value: value )
   component_id = Component.last.id
   ComponentsProject.create!( project_id: 1, amount: amount, component_id: component_id )
 end
@@ -69,7 +69,7 @@ capacitors_list = [
 ]
 
 capacitors_list.each do |amount, value|
-  Component.create!(component_type: 2, value: value )
+  Component.create!(component_type: 1, value: value )
   component_id = Component.last.id
   ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
@@ -85,7 +85,7 @@ ics_list = [
 ]
 
 ics_list.each do |amount, legs, value|
-  Component.create!(component_type: 3, legs: legs, model: value )
+  Component.create!(component_type: 2, legs: legs, model: value )
   component_id = Component.last.id
   ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
@@ -109,7 +109,7 @@ transistors_list = [
 ]
 
 transistors_list.each do |amount, value|
-  Component.create!(component_type: 4, model: value )
+  Component.create!(component_type: 3, model: value )
   component_id = Component.last.id
   ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
@@ -122,20 +122,20 @@ potentiometers_list = [
 ]
 
 potentiometers_list.each do |amount, value, log, rev|
-  Component.create!(component_type: 6, value: value, log: log, rev: rev )
+  Component.create!(component_type: 5, value: value, log: log, rev: rev )
   component_id = Component.last.id
   ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
 
 swdcjacks_list = [
-    [7,3,"mono baratos"],
-    [7,1,"mono medio"],
-    [7,1,"mono bueno"],
-    [7,2,"stereo bueno"],
-    [7,1,"stereo barato"],
-    [8,1,"3PDT"],
-    [8,1,"DPDT"],
-    [10,2,"bueno"]
+    [6,3,"mono baratos"],
+    [6,1,"mono medio"],
+    [6,1,"mono bueno"],
+    [6,2,"stereo bueno"],
+    [6,1,"stereo barato"],
+    [7,1,"3PDT"],
+    [7,1,"DPDT"],
+    [9,2,"bueno"]
 ]
 
 swdcjacks_list.each do |id, amount, model|
@@ -153,7 +153,7 @@ sockets_list = [
 ]
 
 sockets_list.each do |amount, legs, model|
-  Component.create!(component_type: 9, legs: legs, model: model )
+  Component.create!(component_type: 8, legs: legs, model: model )
   component_id = Component.last.id
   ComponentsProject.create!(project_id: 1, amount: amount, component_id: component_id )
 end
