@@ -6,16 +6,13 @@ module Api
       before_action :set_component,  only: %i[show update destroy]
       before_action :set_components, only: %i[show index inventory]
       before_action :set_amount,     only: %i[show]
-      # before_action :set_amount, only: [:show]
 
-      # GET /inventoryra
+      # GET /inventory
       def inventory
         @a_components = []
         @components.each do |c|
-          json_c = c.to_json
-          hash_c = JSON.parse(json_c)
           components_project = @project.amounts.find_by(component_id: c.id)
-          hash_c[:amount] = components_project.amount
+          hash_c = add_amount(c, components_project.amount)
           @a_components << hash_c
         end
         @components = @a_components
@@ -26,10 +23,8 @@ module Api
       def index
         @a_components = []
         @components.each do |c|
-          json_c = c.to_json
-          hash_c = JSON.parse(json_c)
           components_project = @project.amounts.find_by(component_id: c.id)
-          hash_c[:amount] = components_project.amount
+          hash_c = add_amount(c, components_project.amount)
           @a_components << hash_c
         end
         @components = @a_components
@@ -38,12 +33,12 @@ module Api
 
       # GET /projects/:project_id/components/:id
       def show
-        json_c = @component.to_json
-        hash_c = JSON.parse(json_c)
-        hash_c[:amount] = @component_amount
-        @component = hash_c
-
-        json_response @component
+        class << @component
+          attr_accessor :amount
+        end
+        component_amount = @project.amounts.find_by(component_id: @component.id).amount
+        @component.amount = component_amount
+        render json: @component
       end
 
       # POST /project/:project_id/components
@@ -97,6 +92,13 @@ module Api
 
       def set_inventory
         @project = Project.find_by(inventory: true)
+      end
+
+      def add_amount(component, amount = 0)
+        json_component = component.to_json
+        hash_component = JSON.parse(json_component)
+        hash_component[:amount] = amount
+        hash_component
       end
 
       def component_params
