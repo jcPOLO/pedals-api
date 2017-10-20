@@ -5,39 +5,19 @@ module Api
       before_action :set_inventory,  only: :inventory
       before_action :set_component,  only: %i[show update destroy]
       before_action :set_components, only: %i[show index inventory]
-      before_action :set_amount,     only: %i[show]
 
       # GET /inventory
       def inventory
-        @a_components = []
-        @components.each do |c|
-          components_project = @project.amounts.find_by(component_id: c.id)
-          hash_c = add_amount(c, components_project.amount)
-          @a_components << hash_c
-        end
-        @components = @a_components
-        json_response(@components)
+        render json: @components
       end
 
       # GET /projects/:project_id/components
       def index
-        @a_components = []
-        @components.each do |c|
-          components_project = @project.amounts.find_by(component_id: c.id)
-          hash_c = add_amount(c, components_project.amount)
-          @a_components << hash_c
-        end
-        @components = @a_components
-        json_response(@components)
+        render json: @components
       end
 
       # GET /projects/:project_id/components/:id
       def show
-        class << @component
-          attr_accessor :amount
-        end
-        component_amount = @project.amounts.find_by(component_id: @component.id).amount
-        @component.amount = component_amount
         render json: @component
       end
 
@@ -75,30 +55,26 @@ module Api
         @project = Project.find(params[:project_id])
       end
 
-      def set_components
-        @components = @project.components
-      end
-
-      def set_component
-        @component = @project.components.find(params[:id])
-      end
-
-      def set_amount
-        @components_project = @project.components_projects.find_by(
-          component_id: @component.id
-        )
-        @component_amount = @components_project.amount
-      end
-
       def set_inventory
         @project = Project.find_by(inventory: true)
       end
 
-      def add_amount(component, amount = 0)
-        json_component = component.to_json
-        hash_component = JSON.parse(json_component)
-        hash_component[:amount] = amount
-        hash_component
+      def set_component
+        component = @project.components.find(params[:id])
+        component_project = @project.amounts.find_by(component_id: component)
+        component.amount = component_project.amount
+        @component = component
+      end
+
+      def set_components
+        components = @project.components
+        a_components = []
+        components.each do |c|
+          component_project = @project.amounts.find_by(component_id: c.id)
+          c.amount = component_project.amount
+          a_components << c
+        end
+        @components = a_components
       end
 
       def component_params
