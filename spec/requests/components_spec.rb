@@ -73,13 +73,18 @@ RSpec.describe 'Components API' do
 
   # Test suite for POST /projects/:project_id/components
   describe 'POST /api/v1/projects/:project_id/components' do
-    let(:valid_attributes) { { component_type: 'Capacitor', value: 123 } }
+    let(:valid_attributes) { { component_type: 'Capacitor', value: 123, amount: 69 } }
 
     context 'when request attributes are valid' do
       before { post "/api/v1/projects/#{project_id}/components", params: valid_attributes }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
+      end
+
+      it 'returns created component' do
+        expect(json['value']).to eq(123)
+        expect(response).to match_response_schema('component')
       end
     end
 
