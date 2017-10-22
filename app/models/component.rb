@@ -2,8 +2,10 @@ class Component < ApplicationRecord
   attr_accessor :amount
   enum component_type: %w[Resistor Capacitor IC Transistor Diode Potentiometer
                           Jack Switch Socket Connector]
-  has_many :components_projects, inverse_of: :component
+  has_many :components_projects
   has_many :projects, through: :components_projects
+
+  accepts_nested_attributes_for :components_projects, allow_destroy: true
 
 
   NIL_ATTRIBUTES = %w(model value legs log rev)

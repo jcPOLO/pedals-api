@@ -5,6 +5,7 @@ module Api
       before_action :set_inventory,  only: :inventory
       before_action :set_component,  only: %i[show update destroy]
       before_action :set_components, only: %i[index inventory]
+      # before_action :check_amount,   only: :create
 
       # GET /inventory
       def inventory
@@ -23,6 +24,9 @@ module Api
 
       # POST /project/:project_id/components
       def create
+        # We do not create the component if it exists already in our inventory
+        @component = @project.components.find_or_create_by!(component_params)
+
         @component = Component.new(component_params)
         if @component.save
           render json: @component, status: :created
@@ -72,8 +76,14 @@ module Api
       end
 
       def component_params
-        params.permit(:value, :component_type, :model, :legs, :log, :rev)
+        params.permit(:value, :component_type, :model, :legs, :log, :rev,
+                      :components_projects_attributes[:amount, :id, :_destroy, :project_id, :component_id])
       end
     end
   end
 end
+
+# p = Project.first
+# params = { component: { component_type: 'Resistor', value: 101, components_projects_attributes: [{ amount: 69 }] } }
+# p.components.create!(params[:component])
+# p.components.create(component_type: 'Resistor', value: 102, components_projects_attributes: [amount: 69])
