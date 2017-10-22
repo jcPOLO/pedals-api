@@ -1,7 +1,7 @@
 class Project < ApplicationRecord
-  has_many :components_projects
+  has_many :components_projects, dependent: :destroy
   has_many :components, through: :components_projects
-  validates :name, presence: true, length: { maximum: 20 }
+  validates :name, presence: true, uniqueness: true, length: { maximum: 25 }
 
   def amounts(component)
     if component.class.to_s == 'Component'
