@@ -23,7 +23,15 @@ module Api
 
       # POST /project/:project_id/components
       def create
-        @component = Component.new(component_params)
+        if @project.id != @inventory.id # Si el componente a crear no es para el inventario...
+          if @inventory.components.find(component_params) == nil # y si el componente no existe ya en el inventario...
+            component = @inventory.components.new(component_params) # lo creamos (habria que quitar amount de params)
+            component.save
+            components_project = ComponentsProject.new(project_id: @inventory, component_id: component, amount: 0) # creamos el componente con amount 0 en inv
+        component = @project.component.find_or_build(component)
+        component.save
+        components_project = ComponentsProject.new(project_id: @project, component_id: component, amount: params.amount) 
+
         if @component.save
           render json: @component, status: :created
         else
