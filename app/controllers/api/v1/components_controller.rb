@@ -54,6 +54,22 @@ module Api
         else
           render json: @component.errors, status: :unprocessable_entity
         end
+        In some cases you will want to nest to nest the create action as well if the resources should be created in the context of another:
+
+# class API::V1::Posts::CommentsController < ApplicationController
+#  # PATCH /api/v1/posts/:post_id/comments
+#  def create
+#    @post = Post.find(params[:post_id])
+#    @comment = @post.comments.create(comment_params)
+#    respond_with(@comment)
+#  end
+#
+#  # GET /api/v1/posts/:post_id/comments
+#  def index
+#    @post = Post.eager_load(:comments).find(params[:post_id])
+#    respond_with(@post.comments)
+#  end
+# end
       end
 
       # DELETE /project/:project_id/components/:id
