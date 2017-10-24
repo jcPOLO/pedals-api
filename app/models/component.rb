@@ -1,10 +1,11 @@
 class Component < ApplicationRecord
-  attr_accessor :amount
+  attr_accessor :amount, :components_projects_attributes
   enum component_type: %w[Resistor Capacitor IC Transistor Diode Potentiometer
                           Jack Switch Socket Connector]
   has_many :components_projects
   has_many :projects, through: :components_projects
 
+  accepts_nested_attributes_for :components_projects
 
   NIL_ATTRIBUTES = %w(model value legs log rev)
   before_validation :nil_if_blank
