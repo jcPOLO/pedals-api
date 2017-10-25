@@ -3,12 +3,13 @@ module Api
     class ComponentsController < ApplicationController
       before_action :set_project,    except: :inventory
       before_action :set_inventory,  only: %i[inventory create]
+      before_action :set_inventory_components, only: :inventory
       before_action :set_component,  only: %i[show update destroy]
-      before_action :set_components, only: %i[index inventory]
+      before_action :set_components, only: %i[index]
 
       # GET /inventory
       def inventory
-        render json: @components
+        render json: @inventory
       end
 
       # GET /projects/:project_id/components
@@ -39,11 +40,11 @@ module Api
             components_project.save
           end
         end
-        @component = components_project.component
+        @component = add_amount(component)
         if @component
           render json: @component, status: :created
         else
-          render json: @component.errors, status: :unprocessable_entity
+          json_response(@component.errors, :unprocessable_entity)
         end
       end
 
@@ -54,22 +55,6 @@ module Api
         else
           render json: @component.errors, status: :unprocessable_entity
         end
- #       In some cases you will want to nest to nest the create action as well if the resources should be created in the context of another:
-
-# class API::V1::Posts::CommentsController < ApplicationController
-#  # PATCH /api/v1/posts/:post_id/comments
-#  def create
-#    @post = Post.find(params[:post_id])
-#    @comment = @post.comments.create(comment_params)
-#    respond_with(@comment)
-#  end
-#
-#  # GET /api/v1/posts/:post_id/comments
-#  def index
-#    @post = Post.eager_load(:comments).find(params[:post_id])
-#    respond_with(@post.comments)
-#  end
-# end
       end
 
       # DELETE /project/:project_id/components/:id
@@ -89,6 +74,10 @@ module Api
 
       def set_inventory
         @inventory = Project.find_by(inventory: true)
+      end
+
+      def set_inventory_components
+        @inventory = @inventory.amounts(@inventory.components)
       end
 
       def set_component

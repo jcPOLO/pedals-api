@@ -1,18 +1,18 @@
 class Project < ApplicationRecord
   has_many :components_projects, dependent: :destroy
   has_many :components, through: :components_projects
-  validates :name, presence: true, uniqueness: true, length: { maximum: 25 }
+  validates :name, presence: true, uniqueness: true, length: { maximum: 50 }
 
   def amounts(component)
     if component.class.to_s == 'Component'
       component.amount = components_projects.find_by(
-        component_id: component
+        component_id: component.id
       ).amount
     else
       a_components = []
       component.find_each do |c|
         c.amount = components_projects.find_by(
-          component_id: c
+          component_id: c.id
         ).amount
         a_components << c
       end

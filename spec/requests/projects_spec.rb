@@ -15,7 +15,6 @@ RSpec.describe 'Projects API', type: :request do
     before { get '/api/v1/projects' }
 
     it 'returns projects' do
-      expect(json).not_to be_nil
       expect(json.size).to eq(10)
     end
 

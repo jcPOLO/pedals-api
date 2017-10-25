@@ -11,7 +11,7 @@ class Component < ApplicationRecord
   before_validation :nil_if_blank
 
   validates :component_type, presence: true
-  validates :value, presence: true, if: :validates_value
+  # validates :value, presence: true, if: :validates_value
   # validates :model, presence: true, if: :validates_model
   # validates :legs, presence: true, if: :validates_legs
 
