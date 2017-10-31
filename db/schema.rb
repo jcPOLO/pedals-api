@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20171005092320) do
     t.boolean "log"
     t.boolean "rev"
     t.string "model"
-    t.integer "component_type"
+    t.string "component_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

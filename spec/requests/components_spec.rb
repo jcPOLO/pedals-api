@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe 'Components API' do
 
   let!(:inventory)          { create(:inventory) }
-  let!(:components_project) { create_list(:components_project, 20, project_id: inventory.id) }
+  let!(:components_project) { create_list(:components_project, 2, project_id: inventory.id) }
 
   let!(:project)            { create(:project) }
-  let!(:components_project) { create_list(:components_project, 20, project_id: project.id) }
+  let!(:components_project) { create_list(:components_project, 2, project_id: project.id) }
 
   let(:project_id)          { project.id }
   let(:id)                  { project.components.first.id }
@@ -20,11 +20,11 @@ RSpec.describe 'Components API' do
       end
 
       it 'returns all project components' do
-        expect(json.size).to eq(20)
+        expect(json.size).to eq(2)
       end
 
       it 'returns the component amount' do
-        20.times do |i|
+        2.times do |i|
           expect(json[i]['amount']).to be_between(1, 100)
         end
       end
@@ -76,7 +76,12 @@ RSpec.describe 'Components API' do
 
   # Test suite for POST /projects/:project_id/components
   describe 'POST /api/v1/projects/:project_id/components' do
-    let(:valid_attributes) { { component: {component_type: 'Capacitor', value: 123}, amount: 69 } }
+    let(:valid_attributes) {
+      { component: { component_type: 'Capacitor', value: 123 },
+        amount: 69,
+        project_id: project_id
+      }
+    }
 
     context 'when request attributes are valid' do
       before { post "/api/v1/projects/#{project_id}/components", params: valid_attributes }

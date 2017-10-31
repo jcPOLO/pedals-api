@@ -1,5 +1,5 @@
 class Project < ApplicationRecord
-  has_many :components_projects, dependent: :destroy
+  has_many :components_projects
   has_many :components, through: :components_projects
   validates :name, presence: true, uniqueness: true, length: { maximum: 50 }
 

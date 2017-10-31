@@ -8,14 +8,14 @@ RSpec.describe 'Projects API', type: :request do
     ComponentsProject.destroy_all
   end
 
-  let!(:projects) { create_list(:project, 10) }
+  let!(:projects) { create_list(:project, 2) }
   let(:project_id) { projects.first.id }
 
   describe 'GET /api/v1/projects' do
     before { get '/api/v1/projects' }
 
     it 'returns projects' do
-      expect(json.size).to eq(10)
+      expect(json.size).to eq(2)
     end
 
     it 'returns status code 200' do

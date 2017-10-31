@@ -1,7 +1,7 @@
 class ComponentsProject < ApplicationRecord
   belongs_to :project     # foreign key - project_id
   belongs_to :component   # foreign key - component_id
-  validates_presence_of :amount
+  validates :amount, presence: true, numericality: 0..1000
 
   # def autosave_associated_records_for_component
   #   @component_found = Component.find_or_create_by(

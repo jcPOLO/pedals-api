@@ -6,7 +6,7 @@ class CreateComponents < ActiveRecord::Migration[5.1]
       t.boolean :log
       t.boolean :rev
       t.string  :model
-      t.integer :component_type
+      t.string :component_type
 
       t.timestamps
     end

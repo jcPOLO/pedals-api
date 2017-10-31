@@ -24,22 +24,7 @@ module Api
 
       # POST /project/:project_id/components
       def create
-        if @project.id != @inventory.id # Si el componente a crear no es para el inventario...
-          component = @inventory.components.find_or_initialize_by(component_params[:component]) # lo creamos (habria que quitar amount de params)
-          if component.save #si el componente no existia lo habriamos creado
-            components_project = @inventory.components_projects.find_or_initialize_by(component_id: component.id, amount: 0)
-            components_project.save
-          end
-          components_project = @project.components_projects.find_or_initialize_by(component_id: component.id, amount: component_params[:amount])
-          components_project.save
-        else
-          # Si llegamos hasta este punto, es que el componente es para meter unicamente en el inventario
-          component = @inventory.components.find_or_initialize_by(component_params[:component]) # lo creamos (habria que quitar amount de params)
-          if component.save
-            components_project = @project.components_projects.find_or_initialize_by(component_id: component.id, amount: component_params[:amount])
-            components_project.save
-          end
-        end
+        component = create_component
         @component = add_amount(component)
         if @component
           render json: @component, status: :created
@@ -92,8 +77,24 @@ module Api
         @project.amounts(components)
       end
 
+      def create_component
+        @component = Component.find_or_create_by!(component_params[:component])
+        create_association(@project, @component, component_params[:amount])
+        create_association(@inventory, @component) unless @project.inventory?
+        @project.components.find(@component.id)
+      end
+
+      def create_association(project, component, amount = 0)
+        ComponentsProject.find_or_create_by!(
+          project_id: project.id,
+          component_id: component.id,
+          amount: amount
+        )
+      end
+
       def component_params
-        params.permit(:value, :component_type, :model, :legs, :log, :rev, :amount, :project_id, component: {})
+      params.permit(:value, :component_type, :model, :legs,
+                    :log, :rev, :amount, :project_id, component: {})
       end
     end
   end

@@ -1,19 +1,28 @@
 class Component < ApplicationRecord
   attr_accessor :amount, :components_projects_attributes
-  enum component_type: %w[Resistor Capacitor IC Transistor Diode Potentiometer
-                          Jack Switch Socket Connector]
+  # enum component_type: %w[Resistor Capacitor IC Transistor Diode Potentiometer
+  #                         Jack Switch Socket Connector]
   has_many :components_projects
   has_many :projects, through: :components_projects
 
   accepts_nested_attributes_for :components_projects
 
-  NIL_ATTRIBUTES = %w(model value legs log rev)
+  NIL_ATTRIBUTES = %w[model value legs log rev]
   before_validation :nil_if_blank
 
-  validates :component_type, presence: true
-  # validates :value, presence: true, if: :validates_value
-  # validates :model, presence: true, if: :validates_model
-  # validates :legs, presence: true, if: :validates_legs
+  validates_associated :components_projects
+  validates :component_type, presence: true,
+                             allow_nil: false,
+                             allow_blank: false,
+                             inclusion: {
+                               in:
+                                 %w[Resistor Capacitor IC Transistor Diode
+                                    Potentiometer Jack Switch Socket Connector]
+                             }
+
+  validates :value, presence: true, if: :validates_value
+  validates :model, presence: true, if: :validates_model
+  validates :legs,  presence: true, if: :validates_legs
 
   # before_save :callback
   # devise macros here
@@ -26,21 +35,16 @@ class Component < ApplicationRecord
   # end
 
   def validates_value
-    self.component_type === 'Resistor' || nil
+    component_type.in?(%w[Resistor Capacitor Potentiometer])
   end
 
-  # def validates_model
-  #   num = self.component_type
-  #   num.between?(3,5) || num.between?(7,10) unless num.nil?
-  # end
+  def validates_model
+    component_type.in?(%w[IC Transistor Diode])
+  end
 
-  # def validates_legs
-  #   self.component_type === 3 || self.component_type === 9
-  # end
-
-  # def validates_potentiometer
-  #   self.component_type === 6
-  # end
+  def validates_legs
+    component_type.in?(%w[IC Socket])
+  end
 
   def nil_if_blank
     NIL_ATTRIBUTES.each { |attr| self[attr] = nil if self[attr].blank? }
@@ -81,5 +85,11 @@ class Component < ApplicationRecord
   # def clean_input_value(value)
   #   value_s = value.to_s.downcase
   #   value_s.gsub(/\s+/,'')      # valueS.delete(' ').delete('\t').delete('\n')...
+  # end
+
+  # def amounts(project)
+  #   self.amount = project.components_projects.find_by(
+  #     component_id: id
+  #   ).amount
   # end
 end

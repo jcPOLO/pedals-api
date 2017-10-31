@@ -17,18 +17,17 @@ module Api
 
       # POST /projects
       def create
-        @project = Project.create!(project_params)
-        json_response(@project, :created)
-        # if @project.save
-        #   render json: @project, status: :created, location: @project
-        # else
-        #   json_response(@project.errors, :unprocessable_entity)
-        # end
+        @project = Project.create!(project_params[:project])
+        if @project.save
+          render json: @project, status: :created
+        else
+          json_response(@project.errors, :unprocessable_entity)
+        end
       end
 
       # PATCH/PUT /projects/1
       def update
-        if @project.update(project_params)
+        if @project.update(project_params[:project])
           json_response @project
         else
           json_response(@project.errors, :unprocessable_entity)
@@ -51,7 +50,7 @@ module Api
       end
 
       def project_params
-        params.permit(:name)
+        params.permit(:name, project: {})
       end
     end
   end
