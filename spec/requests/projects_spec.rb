@@ -52,7 +52,7 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   describe 'POST /api/v1/projects' do
-    let(:valid_attributes) { { name: 'PRoCO RAT' } }
+    let(:valid_attributes) { { project: { name: 'PRoCO RAT' } } }
 
     context 'when the request is valid' do
       before { post '/api/v1/projects', params: valid_attributes }
@@ -67,7 +67,7 @@ RSpec.describe 'Projects API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/api/v1/projects', params: { name: ' ' } }
+      before { post '/api/v1/projects', params: { project: { name: ' ' } } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)

@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe 'Components API' do
 
   let!(:inventory)          { create(:inventory) }
-  let!(:components_project) { create_list(:components_project, 2, project_id: inventory.id) }
+  let!(:components_project) { create_list(:components_project, 10, project_id: inventory.id) }
 
   let!(:project)            { create(:project) }
-  let!(:components_project) { create_list(:components_project, 2, project_id: project.id) }
+  let!(:components_project) { create_list(:components_project, 10, project_id: project.id) }
 
   let(:project_id)          { project.id }
   let(:id)                  { project.components.first.id }
@@ -20,11 +20,11 @@ RSpec.describe 'Components API' do
       end
 
       it 'returns all project components' do
-        expect(json.size).to eq(2)
+        expect(json.size).to eq(10)
       end
 
       it 'returns the component amount' do
-        2.times do |i|
+        10.times do |i|
           expect(json[i]['amount']).to be_between(1, 100)
         end
       end
@@ -97,47 +97,49 @@ RSpec.describe 'Components API' do
     end
 
     context 'when an invalid request' do
-      before { post "/api/v1/projects/#{project_id}/components", params: {} }
+      before { post "/api/v1/projects/#{project_id}/components", params: { component: { } } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match("{\"component_type\":[\"can't be blank\"]}")
+        expect(response.body).to match(
+          "{\"message\":\"Validation failed: Amount can't be blank, Amount is not a number\"}"
+        )
       end
     end
   end
 
   # Test suite for PUT /api/v1/projects/:project_id/components/:id
-  # describe 'PUT /api/v1/projects/:project_id/components/:id' do
-  #   let(:valid_attributes) { { value: 200 } }
+  describe 'PUT /api/v1/projects/:project_id/components/:id' do
+    let(:valid_attributes) { { amount: 200 } }
 
-  #   before { put "/api/v1/projects/#{project_id}/components/#{id}", params: valid_attributes }
+    before { put "/api/v1/projects/#{project_id}/components/#{id}", params: valid_attributes }
 
-  #   context 'when component exists' do
-  #     it 'returns status code 204' do
-  #       expect(response).to have_http_status(204)
-  #     end
+    context 'when component exists' do
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
 
-  #     it 'updates the component' do
-  #       updated_component = Component.find(id)
-  #       expect(updated_component.value).to match(200)
-  #     end
-  #   end
+      it 'updates the component' do
+        updated_component = ComponentsProject.find_by(project_id: project_id, component_id: id)
+        expect(updated_component.amount).to match(200)
+      end
+    end
 
-  #   context 'when the component does not exist' do
-  #     let(:id) { 0 }
+    context 'when the component does not exist' do
+      let(:id) { 0 }
 
-  #     it 'returns status code 404' do
-  #       expect(response).to have_http_status(404)
-  #     end
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
 
-  #     it 'returns a not found message' do
-  #       expect(response.body).to match(/Couldn't find Component/)
-  #     end
-  #   end
-  # end
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find Component/)
+      end
+    end
+  end
 
   # Test suite for DELETE /api/v1/projects/:project_id/components/:id
   describe 'DELETE /api/v1/projects/:project_id/components/:id' do

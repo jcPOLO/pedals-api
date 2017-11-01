@@ -5,7 +5,7 @@ FactoryGirl.define do
          Jack Switch Socket Connector].sample
     }
     value { Faker::Number.between(1000, 2000) }
-    model { Faker::Movie.name }
+    model { Faker::LeagueOfLegends.champion }
     legs { Faker::Number.between(2, 20) }
 
     #
