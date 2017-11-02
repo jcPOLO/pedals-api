@@ -35,10 +35,9 @@ module Api
 
       # PATCH/PUT /project/:project_id/components/:id
       def update
-        component = update_component
-        @component = add_amount(component)
+        @component = update_component
         if @component
-          render json: @component, status: :ok
+          head :no_content, status: :ok
         else
           render json: @component.errors, status: :unprocessable_entity
         end
